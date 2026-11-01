@@ -1,0 +1,12 @@
+import { Router } from 'express';
+import { authenticate } from '../middlewares/authenticate.js';
+import { requireRole } from '../middlewares/authorize.js';
+import { asyncHandler } from '../middlewares/asyncHandler.js';
+import * as c from '../controllers/extended.controller.js';
+const router=Router();
+router.use(authenticate,requireRole('ADMIN','EDITOR','AUTHOR'));
+router.get('/dashboard',asyncHandler(c.getAuthorDashboard));
+router.get('/articles',asyncHandler(c.getMyArticles));
+router.get('/schedule',asyncHandler(c.getAuthorSchedule));
+router.get('/analytics',asyncHandler(c.getAuthorAnalytics));
+export default router;

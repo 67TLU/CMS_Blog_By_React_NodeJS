@@ -1,0 +1,12 @@
+import { Router } from 'express';
+import { rateLimit } from 'express-rate-limit';
+import { asyncHandler } from '../middlewares/asyncHandler.js';
+import * as c from '../controllers/extended.controller.js';
+const router=Router();
+const contactLimiter=rateLimit({windowMs:60_000,limit:1,standardHeaders:'draft-8',legacyHeaders:false,message:{success:false,error:{code:'RATE_LIMITED',message:'Vui lòng đợi một phút trước khi gửi liên hệ tiếp theo.'}}});
+router.get('/settings/public',asyncHandler(c.getPublicSettings));
+router.get('/menu',asyncHandler(c.getPublicMenu));
+router.post('/contact',contactLimiter,asyncHandler(c.submitContact));
+router.post('/advertisements/:id/event',asyncHandler(c.recordAdEvent));
+router.get('/system/health',asyncHandler(c.systemHealth));
+export default router;

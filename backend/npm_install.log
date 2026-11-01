@@ -1,0 +1,78 @@
+npm warn deprecated crypto@1.0.1: This package is no longer supported. It's now a built-in Node module. If you've depended on crypto, you should switch to the one that's built-in.
+npm warn cleanup Failed to remove some directories [
+npm warn cleanup   [
+npm warn cleanup     '\\\\?\\C:\\Users\\PCLTC\\Downloads\\backend\\node_modules\\es-define-property',
+npm warn cleanup     [Error: EBUSY: resource busy or locked, rmdir 'C:\Users\PCLTC\Downloads\backend\node_modules\es-define-property'] {
+npm warn cleanup       errno: -4082,
+npm warn cleanup       code: 'EBUSY',
+npm warn cleanup       syscall: 'rmdir',
+npm warn cleanup       path: 'C:\\Users\\PCLTC\\Downloads\\backend\\node_modules\\es-define-property'
+npm warn cleanup     }
+npm warn cleanup   ],
+npm warn cleanup   [
+npm warn cleanup     '\\\\?\\C:\\Users\\PCLTC\\Downloads\\backend\\node_modules',
+npm warn cleanup     [Error: EBUSY: resource busy or locked, rmdir 'C:\Users\PCLTC\Downloads\backend\node_modules\@humanfs'] {
+npm warn cleanup       errno: -4082,
+npm warn cleanup       code: 'EBUSY',
+npm warn cleanup       syscall: 'rmdir',
+npm warn cleanup       path: 'C:\\Users\\PCLTC\\Downloads\\backend\\node_modules\\@humanfs'
+npm warn cleanup     }
+npm warn cleanup   ],
+npm warn cleanup   [
+npm warn cleanup     '\\\\?\\C:\\Users\\PCLTC\\Downloads\\backend\\node_modules\\gopd',
+npm warn cleanup     [Error: EBUSY: resource busy or locked, rmdir 'C:\Users\PCLTC\Downloads\backend\node_modules\gopd'] {
+npm warn cleanup       errno: -4082,
+npm warn cleanup       code: 'EBUSY',
+npm warn cleanup       syscall: 'rmdir',
+npm warn cleanup       path: 'C:\\Users\\PCLTC\\Downloads\\backend\\node_modules\\gopd'
+npm warn cleanup     }
+npm warn cleanup   ],
+npm warn cleanup   [
+npm warn cleanup     '\\\\?\\C:\\Users\\PCLTC\\Downloads\\backend\\node_modules\\@humanfs\\types',
+npm warn cleanup     [Error: EBUSY: resource busy or locked, rmdir 'C:\Users\PCLTC\Downloads\backend\node_modules\@humanfs\types'] {
+npm warn cleanup       errno: -4082,
+npm warn cleanup       code: 'EBUSY',
+npm warn cleanup       syscall: 'rmdir',
+npm warn cleanup       path: 'C:\\Users\\PCLTC\\Downloads\\backend\\node_modules\\@humanfs\\types'
+npm warn cleanup     }
+npm warn cleanup   ],
+npm warn cleanup   [
+npm warn cleanup     '\\\\?\\C:\\Users\\PCLTC\\Downloads\\backend\\node_modules\\@humanfs',
+npm warn cleanup     [Error: EBUSY: resource busy or locked, rmdir 'C:\Users\PCLTC\Downloads\backend\node_modules\@humanfs\types'] {
+npm warn cleanup       errno: -4082,
+npm warn cleanup       code: 'EBUSY',
+npm warn cleanup       syscall: 'rmdir',
+npm warn cleanup       path: 'C:\\Users\\PCLTC\\Downloads\\backend\\node_modules\\@humanfs\\types'
+npm warn cleanup     }
+npm warn cleanup   ],
+npm warn cleanup   [
+npm warn cleanup     '\\\\?\\C:\\Users\\PCLTC\\Downloads\\backend\\node_modules\\@humanwhocodes',
+npm warn cleanup     [Error: EBUSY: resource busy or locked, rmdir 'C:\Users\PCLTC\Downloads\backend\node_modules\@humanwhocodes'] {
+npm warn cleanup       errno: -4082,
+npm warn cleanup       code: 'EBUSY',
+npm warn cleanup       syscall: 'rmdir',
+npm warn cleanup       path: 'C:\\Users\\PCLTC\\Downloads\\backend\\node_modules\\@humanwhocodes'
+npm warn cleanup     }
+npm warn cleanup   ],
+npm warn cleanup   [
+npm warn cleanup     '\\\\?\\C:\\Users\\PCLTC\\Downloads\\backend\\node_modules\\has-symbols',
+npm warn cleanup     [Error: EBUSY: resource busy or locked, rmdir 'C:\Users\PCLTC\Downloads\backend\node_modules\has-symbols'] {
+npm warn cleanup       errno: -4082,
+npm warn cleanup       code: 'EBUSY',
+npm warn cleanup       syscall: 'rmdir',
+npm warn cleanup       path: 'C:\\Users\\PCLTC\\Downloads\\backend\\node_modules\\has-symbols'
+npm warn cleanup     }
+npm warn cleanup   ],
+npm warn cleanup   [
+npm warn cleanup     '\\\\?\\C:\\Users\\PCLTC\\Downloads\\backend\\node_modules\\@pinojs',
+npm warn cleanup     [Error: EBUSY: resource busy or locked, rmdir 'C:\Users\PCLTC\Downloads\backend\node_modules\@pinojs'] {
+npm warn cleanup       errno: -4082,
+npm warn cleanup       code: 'EBUSY',
+npm warn cleanup       syscall: 'rmdir',
+npm warn cleanup       path: 'C:\\Users\\PCLTC\\Downloads\\backend\\node_modules\\@pinojs'
+npm warn cleanup     }
+npm warn cleanup   ]
+npm warn cleanup ]
+npm error process terminated
+npm error signal SIGHUP
+npm error A complete log of this run can be found in: C:\Users\PCLTC\AppData\Local\npm-cache\_logs\2026-10-31T14_30_18_815Z-debug-0.log

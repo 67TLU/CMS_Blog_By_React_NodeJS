@@ -1,0 +1,14 @@
+npm warn cleanup Failed to remove some directories [
+npm warn cleanup   [
+npm warn cleanup     '\\\\?\\C:\\Users\\PCLTC\\Downloads\\backend\\node_modules\\@eslint-community',
+npm warn cleanup     [Error: EPERM: operation not permitted, rmdir 'C:\Users\PCLTC\Downloads\backend\node_modules\@eslint-community\eslint-utils'] {
+npm warn cleanup       errno: -4048,
+npm warn cleanup       code: 'EPERM',
+npm warn cleanup       syscall: 'rmdir',
+npm warn cleanup       path: 'C:\\Users\\PCLTC\\Downloads\\backend\\node_modules\\@eslint-community\\eslint-utils'
+npm warn cleanup     }
+npm warn cleanup   ]
+npm warn cleanup ]
+npm error process terminated
+npm error signal SIGHUP
+npm error A complete log of this run can be found in: C:\Users\PCLTC\AppData\Local\npm-cache\_logs\2026-10-31T14_04_20_242Z-debug-0.log
