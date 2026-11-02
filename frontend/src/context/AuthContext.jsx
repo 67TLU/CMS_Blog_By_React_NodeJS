@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, useMemo } from "react";
+import { useNavigate } from "react-router-dom"; // 1. Import useNavigate
 import { api, setAccessToken, getAccessToken, refreshAccessToken } from "@/lib/api";
 
 const AuthContext = createContext(null);
@@ -8,10 +9,9 @@ const normalizeUser = (user) =>
   user ? { ...user, role: normalizeRole(user.role), avatar: user.avatar || user.avatarUrl || null } : null;
 
 export function AuthProvider({ children }) {
-  // Không lưu user vào sessionStorage — bootstrap từ refresh-token cookie (HttpOnly).
-  // Token truy cập (access token) chỉ tồn tại trong bộ nhớ JavaScript.
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate(); // 2. Khởi tạo hook điều hướng
 
   const acceptSession = useCallback((result) => {
     if (result?.accessToken) setAccessToken(result.accessToken);
@@ -30,8 +30,12 @@ export function AuthProvider({ children }) {
         if (window.location.hash.includes("oauth=success")) {
           const params = new URLSearchParams(window.location.hash.slice(1));
           const token = params.get("accessToken");
-          if (token) setAccessToken(token);
-          window.history.replaceState(null, "", `${window.location.pathname}${window.location.search}`);
+          if (token) {
+            setAccessToken(token);
+            // 3. Xóa hash thô trên thanh URL và đẩy về trang chủ bằng navigate
+            window.history.replaceState(null, "", `${window.location.pathname}${window.location.search}`);
+            navigate("/", { replace: true }); 
+          }
         }
 
         // 1. Nếu đã có accessToken trong memory (chưa tắt tab), lấy user
@@ -65,7 +69,7 @@ export function AuthProvider({ children }) {
     return () => {
       active = false;
     };
-  }, []);
+  }, [navigate]); // 4. Thêm navigate vào mảng phụ thuộc (dependencies)
 
   const login = useCallback(async (credentials) => {
     const result = await api.post("/auth/login", credentials, { retryAuth: false });

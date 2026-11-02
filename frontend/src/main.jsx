@@ -12,12 +12,13 @@ import { NotificationProvider } from "./context/NotificationContext.jsx";
 import AbilityProvider from "./ability/AbilityProvider.jsx"; 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
+                <BrowserRouter>
     <ThemeProvider>
       <AuthProvider>
         <ToastProvider>
           <NotificationProvider>
        
-            <BrowserRouter>
+
             <AbilityProvider>
               <DialogProvider>
                 <AnnouncementModal>
@@ -28,10 +29,10 @@ createRoot(document.getElementById("root")).render(
                 <App></App>
               </DialogProvider>
               </AbilityProvider>
-            </BrowserRouter>
         </NotificationProvider>
         </ToastProvider>
       </AuthProvider>
     </ThemeProvider>
+    </BrowserRouter>
   </StrictMode>,
 );
