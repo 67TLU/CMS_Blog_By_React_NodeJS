@@ -147,13 +147,12 @@ export async function consumeRefreshTokenByHash(tokenHash) {
   try {
     await connection.beginTransaction();
 
+    // 1. Kiểm tra token còn hợp lệ và chưa thu hồi
     const [rows] = await connection.execute(
       `
-        SELECT id, user_id
+        SELECT id, user_id, revoked, revoked_at, expires_at
         FROM refresh_tokens
         WHERE token_hash = ?
-          AND revoked = 0
-          AND expires_at > NOW()
         LIMIT 1
         FOR UPDATE
       `,
@@ -167,10 +166,38 @@ export async function consumeRefreshTokenByHash(tokenHash) {
       return null;
     }
 
+    // 2. Nếu đã hết hạn hoàn toàn
+    if (new Date(tokenRecord.expires_at) <= new Date()) {
+      await connection.rollback();
+      return null;
+    }
+
+    // 3. Nếu token đã bị thu hồi: kiểm tra xem có nằm trong Grace Period (20 giây) không
+    // Cửa sổ ân hạn 20s giúp chống hiện tượng race condition khi người dùng F5 hoặc gọi song song
+    if (tokenRecord.revoked === 1) {
+      const revokedAt = tokenRecord.revoked_at ? new Date(tokenRecord.revoked_at) : null;
+      const isWithinGracePeriod = revokedAt && (Date.now() - revokedAt.getTime() <= 20_000);
+
+      if (isWithinGracePeriod) {
+        // Cho phép tái tạo phiên từ token vừa mới xoay trong vòng 20s
+        await connection.commit();
+        return {
+          tokenId: tokenRecord.id,
+          userId: tokenRecord.user_id,
+          isGracePeriod: true,
+        };
+      }
+
+      await connection.rollback();
+      return null;
+    }
+
+    // 4. Token hợp lệ lần đầu: đánh dấu thu hồi kèm thời gian revoked_at
     const [result] = await connection.execute(
       `
         UPDATE refresh_tokens
-        SET revoked = 1
+        SET revoked = 1,
+            revoked_at = NOW()
         WHERE id = ?
           AND revoked = 0
       `,
@@ -187,6 +214,7 @@ export async function consumeRefreshTokenByHash(tokenHash) {
     return {
       tokenId: tokenRecord.id,
       userId: tokenRecord.user_id,
+      isGracePeriod: false,
     };
   } catch (error) {
     await connection.rollback();

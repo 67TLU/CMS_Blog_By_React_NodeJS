@@ -1,6 +1,6 @@
 # ERD — Portal News (MySQL)
 
-> Bản đồ quan hệ dữ liệu, kèm: `database/schema.sql` (DDL) · `database/seed.sql` (dữ liệu mẫu) · `docs/API.md` (API).
+> Bản đồ quan hệ dữ liệu, kèm: `database/schema.sql` (DDL) · `database/data.sql` (dữ liệu mẫu) · `database/events.sql` (sự kiện) · `docs/API.md` (API).
 
 ## 1. Sơ đồ tổng thể (Mermaid)
 

@@ -4,7 +4,7 @@
 Database : username:root,password:sudo1234@
 database:portal_news
 > Frontend: `c:\Project\NodeJS\React` — mỗi endpoint dưới đây ánh xạ trực tiếp tới trang UI tương ứng.
-> Database: xem `database/schema.sql` & `database/seed.sql`.
+> Database: xem `database/schema.sql`, `database/data.sql` & `database/events.sql`.
 
 ---
 

@@ -10,7 +10,8 @@ export function notFoundHandler(req, res, next) {
 }
 
 export function errorHandler(err, req, res, next) {
-  console.log(err)
+  // Log lỗi server (5xx) vào stderr; client errors (4xx) không cần log
+  if (!err.status || err.status >= 500) console.error("[ErrorHandler]", err);
   if (res.headersSent) {
     return next(err);
   }

@@ -178,6 +178,7 @@ export default function ProfilePage() {
               <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:translate-x-1 transition-transform" />
             </Link>
 
+            {["author", "editor", "admin"].includes(user?.role) && (
             <Link
               to="/author"
               className="flex items-center justify-between p-3 rounded-lg border border-border bg-card hover:bg-muted transition-colors group cursor-pointer"
@@ -188,6 +189,7 @@ export default function ProfilePage() {
               </div>
               <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:translate-x-1 transition-transform" />
             </Link>
+            )}
           </CardContent>
         </Card>
       </div>

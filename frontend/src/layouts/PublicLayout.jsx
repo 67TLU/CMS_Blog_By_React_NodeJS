@@ -203,12 +203,15 @@ export default function PublicLayout({ children }) {
     
     <DropdownMenuSeparator />
     
-    <DropdownMenuItem
-      onClick={() => handleNavigate("/author")}
-      className="cursor-pointer hover:bg-muted"
-    >
-      Khu vực tác giả
-    </DropdownMenuItem>
+    {/* Khu vực tác giả — chỉ hiện với author/editor/admin */}
+    {["author", "editor", "admin"].includes(user?.role) && (
+      <DropdownMenuItem
+        onClick={() => handleNavigate("/author")}
+        className="cursor-pointer hover:bg-muted"
+      >
+        Khu vực tác giả
+      </DropdownMenuItem>
+    )}
     <Can do="access" on="AdminDashBoard">
           <DropdownMenuItem
       onClick={() => handleNavigate("/admin")}
@@ -353,7 +356,9 @@ export default function PublicLayout({ children }) {
                 <>
                   <li><Link to="/user/profile" className="hover:text-foreground transition-colors">Hồ sơ cá nhân</Link></li>
                   <li><Link to="/user/bookmarks" className="hover:text-foreground transition-colors">Bài viết đã lưu</Link></li>
-                  <li><Link to="/author" className="hover:text-foreground transition-colors">Khu vực tác giả</Link></li>
+                  {["author", "editor", "admin"].includes(user?.role) && (
+                    <li><Link to="/author" className="hover:text-foreground transition-colors">Khu vực tác giả</Link></li>
+                  )}
                 </>
               ) : (
                 <>

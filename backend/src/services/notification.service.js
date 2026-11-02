@@ -39,9 +39,10 @@ export async function markAllAsRead(userId) {
 }
 
 export async function createNotification({ user_id, type, title, body, link }) {
-  console.log("Creating notification:", { user_id, type, title, body, link });
+  if (process.env.NODE_ENV === "development") {
+    console.debug("[Notification]", { user_id, type, title });
+  }
   const VALID_TYPES = new Set(["SYSTEM", "LIKE", "COMMENT"]);
-  console.log("Valid types:", VALID_TYPES);
   if (!VALID_TYPES.has(type)) {
     throw new Error("Invalid notification type");
   }

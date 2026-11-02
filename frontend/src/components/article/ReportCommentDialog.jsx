@@ -1,4 +1,5 @@
-import { AlertCircle } from "lucide-react";
+import React, { useState } from "react";
+import { AlertTriangle, CheckCircle2, Flag, MessageSquare } from "lucide-react";
 
 import {
   Dialog,
@@ -19,6 +20,13 @@ import {
 
 import { Button } from "@/components/ui/button";
 
+const REPORT_REASONS = [
+  { value: "Spam / Quảng cáo rác", label: "Spam / Quảng cáo không liên quan" },
+  { value: "Ngôn từ thù hận / Xúc phạm", label: "Ngôn từ thù hận / Xúc phạm người khác" },
+  { value: "Thông tin sai sự thật", label: "Thông tin sai sự thật / Lừa đảo" },
+  { value: "Lý do khác", label: "Nội dung phản cảm / Lý do khác" },
+];
+
 export default function ReportCommentDialog({
   comment,
   reason,
@@ -27,113 +35,111 @@ export default function ReportCommentDialog({
   onSubmit,
   onClose,
 }) {
+  const [submitting, setSubmitting] = useState(false);
+
   if (!comment) return null;
+
+  const handleSubmit = async () => {
+    setSubmitting(true);
+    try {
+      await onSubmit();
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   return (
     <Dialog
       open={!!comment}
       onOpenChange={(open) => {
-        if (!open) {
-          onClose();
-        }
+        if (!open) onClose();
       }}
     >
-      <DialogContent className="sm:max-w-md p-9">
-        <DialogHeader>
-          <DialogTitle className="flex justify-center items-center gap-2 p-1.5">
-            <AlertCircle className="w-5 h-5 text-red-500" />
-
-            Báo cáo bình luận vi phạm
-          </DialogTitle>
-
-          <DialogDescription className="text-center text-sm text-muted-foreground">
-            Vui lòng chọn lý do báo cáo để Ban quản trị xử lý.
-          </DialogDescription>
+      <DialogContent className="sm:max-w-md p-6 rounded-2xl border border-border bg-card text-card-foreground shadow-2xl">
+        <DialogHeader className="text-left space-y-1.5 pb-2">
+          <div className="flex items-center gap-2.5">
+            <div className="w-9 h-9 rounded-full bg-destructive/10 flex items-center justify-center shrink-0">
+              <AlertTriangle className="w-5 h-5 text-destructive" />
+            </div>
+            <div>
+              <DialogTitle className="text-lg font-bold leading-none">
+                Báo cáo bình luận
+              </DialogTitle>
+              <DialogDescription className="text-xs text-muted-foreground mt-1">
+                Gửi phản ánh tới Ban quản trị để giữ gìn môi trường văn minh.
+              </DialogDescription>
+            </div>
+          </div>
         </DialogHeader>
 
         {success ? (
-          <div className="rounded-lg border border-green-500/20 bg-green-500/10 p-4 text-center">
-            <p className="text-sm font-medium text-green-600 dark:text-green-400">
-              Cảm ơn bạn!
-            </p>
-
-            <p className="mt-1 text-xs text-muted-foreground">
-              Báo cáo của bạn đã được gửi tới Ban quản trị để xử lý.
-            </p>
+          <div className="py-6 text-center space-y-3">
+            <div className="w-12 h-12 rounded-full bg-emerald-500/10 text-emerald-500 mx-auto flex items-center justify-center">
+              <CheckCircle2 className="w-7 h-7" />
+            </div>
+            <div>
+              <p className="text-base font-semibold text-foreground">
+                Đã gửi báo cáo thành công!
+              </p>
+              <p className="text-xs text-muted-foreground mt-1 max-w-xs mx-auto">
+                Cảm ơn bạn đã đóng góp. Ban biên tập sẽ kiểm duyệt và xử lý nội dung vi phạm sớm nhất.
+              </p>
+            </div>
+            <div className="pt-2">
+              <Button size="sm" onClick={onClose} className="w-full">
+                Đóng
+              </Button>
+            </div>
           </div>
         ) : (
-          <div className="space-y-5">
-            <div className="rounded-lg border bg-muted/50 p-3">
-              <p className="mb-1 text-xs font-medium text-muted-foreground">
-                Nội dung bị báo cáo
-              </p>
-
-              <p className="text-sm text-foreground">
+          <div className="space-y-4 pt-1">
+            {/* Trích đoạn bình luận */}
+            <div className="rounded-xl border border-border/80 bg-muted/40 p-3.5 space-y-1">
+              <div className="flex items-center gap-1.5 text-xs text-muted-foreground font-medium">
+                <MessageSquare className="w-3.5 h-3.5" />
+                <span>Nội dung bị báo cáo:</span>
+              </div>
+              <p className="text-sm text-foreground italic line-clamp-3 bg-background/50 p-2 rounded-md border border-border/40">
                 "{comment.content}"
               </p>
             </div>
 
-            {comment.replyToAuthor && (
-              <div className="rounded-lg border border-blue-500/20 bg-blue-500/5 p-3">
-                <p className="text-xs text-muted-foreground">
-                  Bình luận này đang trả lời
-                </p>
-
-                <p className="mt-1 text-sm font-medium text-blue-600 dark:text-blue-400">
-                  @{comment.replyToAuthor}
-                </p>
-              </div>
-            )}
-
-            <div className="space-y-2">
-              <label className="text-sm font-medium">
-                Lý do báo cáo
+            {/* Chọn lý do */}
+            <div className="space-y-1.5">
+              <label className="text-xs font-semibold text-foreground flex items-center gap-1">
+                <Flag className="w-3.5 h-3.5 text-destructive" /> Chọn lý do vi phạm:
               </label>
-
-              <Select
-                value={reason}
-                onValueChange={onReasonChange}
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Chọn lý do báo cáo..." />
+              <Select value={reason} onValueChange={onReasonChange}>
+                <SelectTrigger className="w-full h-10 border-border">
+                  <SelectValue placeholder="-- Chọn nguyên nhân phù hợp --" />
                 </SelectTrigger>
-
-                <SelectContent>
-                  <SelectItem value="Spam / Quảng cáo rác">
-                    Spam / Quảng cáo rác
-                  </SelectItem>
-
-                  <SelectItem value="Ngôn từ thù hận / Xúc phạm">
-                    Ngôn từ thù hận / Xúc phạm
-                  </SelectItem>
-
-                  <SelectItem value="Thông tin sai sự thật">
-                    Thông tin sai sự thật
-                  </SelectItem>
-
-                  <SelectItem value="Lý do khác">
-                    Lý do khác
-                  </SelectItem>
+                <SelectContent className="border-border">
+                  {REPORT_REASONS.map((r) => (
+                    <SelectItem key={r.value} value={r.value} className="cursor-pointer text-sm">
+                      {r.label}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
 
-            <DialogFooter>
+            <DialogFooter className="flex flex-col-reverse sm:flex-row gap-2 pt-2">
               <Button
                 type="button"
                 variant="outline"
                 onClick={onClose}
+                className="w-full sm:w-auto border-border"
               >
-                Hủy
+                Hủy bỏ
               </Button>
-
               <Button
                 type="button"
                 variant="destructive"
-                onClick={onSubmit}
-                disabled={!reason}
+                onClick={handleSubmit}
+                disabled={!reason || submitting}
+                className="w-full sm:w-auto"
               >
-                Gửi báo cáo
+                {submitting ? "Đang gửi..." : "Gửi báo cáo vi phạm"}
               </Button>
             </DialogFooter>
           </div>

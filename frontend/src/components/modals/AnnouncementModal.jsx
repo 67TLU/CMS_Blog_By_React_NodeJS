@@ -6,16 +6,15 @@ import {
   DialogTitle, 
   DialogDescription, 
   DialogFooter 
-} from "@/components/ui/dialog"; // Đường dẫn có thể đổi thành ../components/ui/dialog tùy cấu hình alias của bạn
+} from "@/components/ui/dialog";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
+import { BellRing } from "lucide-react";
 
-export default function AnnouncementModal({children}) {
-  // Khởi tạo thẳng từ localStorage trong useState initializer — không cần effect setState
+export default function AnnouncementModal({ children }) {
   const [isOpen, setIsOpen] = useState(() => {
     try {
       const hideUntil = localStorage.getItem("hide_announcement_until");
-      // Chưa từng ẩn hoặc đã quá 24h → hiện modal
       return !hideUntil || Date.now() > parseInt(hideUntil, 10);
     } catch {
       return true;
@@ -24,9 +23,8 @@ export default function AnnouncementModal({children}) {
   const [dontShowAgain, setDontShowAgain] = useState(false);
 
   const handleClose = () => {
-    // 2. Nếu người dùng tích chọn ẩn 24h, tính toán thời gian và lưu vào localStorage
     if (dontShowAgain) {
-      const expiresAt = new Date().getTime() + 24 * 60 * 60 * 1000; // Hiện tại + 24 tiếng (tính bằng mili-giây)
+      const expiresAt = Date.now() + 24 * 60 * 60 * 1000;
       localStorage.setItem("hide_announcement_until", expiresAt.toString());
     }
     setIsOpen(false);
@@ -34,35 +32,41 @@ export default function AnnouncementModal({children}) {
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle className="text-xl font-bold text-center">📢 Thông Báo Quan Trọng</DialogTitle>
-          <DialogDescription className="text-center pt-2">
-           {children? children : `Trang web sử dụng dữ liệu giả lập!
-           Chi tiết về dữ liệu giả lập, vui lòng xem tại:
-           - [Dữ liệu giả lập](/data-fake) `}
+      <DialogContent className="sm:max-w-[440px] p-6 rounded-2xl border border-border bg-card text-card-foreground shadow-2xl">
+        <DialogHeader className="text-center space-y-2">
+          <div className="w-12 h-12 rounded-full bg-primary/10 text-primary mx-auto flex items-center justify-center mb-1">
+            <BellRing className="w-6 h-6 animate-pulse" />
+          </div>
+          <DialogTitle className="text-xl font-bold tracking-tight">
+            Chào mừng đến với Portal News
+          </DialogTitle>
+          <DialogDescription className="text-sm text-muted-foreground leading-relaxed pt-1">
+            {children ? (
+              children
+            ) : (
+              "Hệ thống tin tức và blog công nghệ liên tục cập nhật 24/7. Hãy đăng ký hoặc đăng nhập tài khoản để lưu bài viết, bình luận và theo dõi các tác giả yêu thích."
+            )}
           </DialogDescription>
         </DialogHeader>
 
-        {/* Khu vực Checkbox ẩn 24h (Dùng component của Shadcn) */}
-        <div className="flex items-center space-x-2 py-4 ">
+        {/* Checkbox ẩn 24h */}
+        <div className="flex items-center space-x-2.5 py-3 px-1 mt-2 bg-muted/40 rounded-lg border border-border/50">
           <Checkbox 
             id="dont-show" 
-            className="border-black/20 dark:border-white/20"
             checked={dontShowAgain}
             onCheckedChange={(checked) => setDontShowAgain(!!checked)}
           />
           <label
             htmlFor="dont-show"
-            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer select-none"
+            className="text-xs text-muted-foreground font-medium leading-none cursor-pointer select-none"
           >
-            Không hiển thị lại thông báo này trong 24 giờ tới
+            Không nhắc lại thông báo này trong 24 giờ tới
           </label>
         </div>
 
-        <DialogFooter>
-          <Button onClick={handleClose} className="w-full">
-            Đồng ý & Đóng
+        <DialogFooter className="mt-2">
+          <Button onClick={handleClose} className="w-full h-10 font-medium">
+            Khám phá ngay
           </Button>
         </DialogFooter>
       </DialogContent>

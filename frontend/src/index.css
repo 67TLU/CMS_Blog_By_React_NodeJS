@@ -1,7 +1,11 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "@fontsource-variable/geist";
-@import "tailwindcss";
+
+@keyframes shrink {
+  from { width: 100%; }
+  to   { width: 0%; }
+}
 
 @custom-variant dark (&:is(.dark *));
 :root {

@@ -22,9 +22,9 @@ function removeClient(userId, res) {
 
 function sendToUser(userId, event, data) {
   const userClients = clients.get(userId);
-  console.log(`Sending event "${event}" to user ${userId} with data:`, data);
-  console.log(userClients);
-  console.log("Current clients map:", clients);
+  if (process.env.NODE_ENV === "development") {
+    console.debug(`[SSE] Sending event "${event}" to user ${userId}`);
+  }
   if (!userClients) return;
 
   for (const client of userClients) {
