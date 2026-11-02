@@ -6,7 +6,6 @@ import { DialogProvider } from "./context/DialogProvider.jsx";
 import { BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import { ToastProvider } from "./context/ToastContext";
-import { ArticleProvider } from "./context/ArticleContext";
 import AnnouncementModal from "./components/modals/AnnouncementModal";
 import { ThemeProvider } from "./context/ThemeContext";
 import { NotificationProvider } from "./context/NotificationContext.jsx";
@@ -17,7 +16,7 @@ createRoot(document.getElementById("root")).render(
       <AuthProvider>
         <ToastProvider>
           <NotificationProvider>
-          <ArticleProvider>
+       
             <BrowserRouter>
             <AbilityProvider>
               <DialogProvider>
@@ -30,7 +29,6 @@ createRoot(document.getElementById("root")).render(
               </DialogProvider>
               </AbilityProvider>
             </BrowserRouter>
-          </ArticleProvider>
         </NotificationProvider>
         </ToastProvider>
       </AuthProvider>
